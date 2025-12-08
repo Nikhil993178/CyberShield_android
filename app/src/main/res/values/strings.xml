@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ANTIGRAV CyberShield</string>
+    <string name="login_title">Cyber Shield</string>
+    <string name="login_subtitle">Secure your device with CyberShield OTP login.</string>
+    <string name="login_phone_hint">Phone number (+91…)</string>
+    <string name="login_button">Send OTP</string>
+    <string name="login_verify_human">Verify reCAPTCHA</string>
+    <string name="login_human_pending">Please verify you are human.</string>
+    <string name="login_human_ok">Human verification complete.</string>
+
+    <string name="otp_title">Verify OTP</string>
+    <string name="otp_hint">Enter 6-digit code</string>
+    <string name="otp_verify">Verify</string>
+    <string name="otp_resend">Resend OTP</string>
+    <string name="otp_first_fail">Incorrect OTP. Alert sent to user.</string>
+    <string name="otp_freeze">Suspicious activity detected. Account frozen after 3 failed attempts.</string>
+    <string name="otp_new_device">New device login detected.</string>
+    <string name="otp_unfreeze_info">Unfreeze requires bank/admin approval within 24h (placeholder flow).</string>
+
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_awareness">Awareness</string>
+    <string name="dashboard_alerts">Alerts</string>
+    <string name="dashboard_monitor">AI Monitor</string>
+    <string name="dashboard_settings">Settings</string>
+
+    <string name="awareness_title">Stay Aware</string>
+    <string name="awareness_tips">• Never share OTPs.\n• Verify caller identity.\n• Avoid public Wi‑Fi for payments.\n• Use strong screen locks.\n• Keep apps updated.\n• Report suspicious messages.</string>
+
+    <string name="alerts_title">Emergency Actions</string>
+    <string name="alerts_freeze">Freeze Device Access</string>
+    <string name="alerts_report">Report Fraud</string>
+
+    <string name="monitor_title">AI Fraud Monitor</string>
+    <string name="monitor_placeholder">Coming soon: realtime ML fraud detection dashboard.</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Preferred language</string>
+    <string name="settings_logout">Logout</string>
+</resources>
+
