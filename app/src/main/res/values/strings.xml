@@ -3,8 +3,16 @@
     <string name="app_name">ANTIGRAV CyberShield</string>
     <string name="login_title">Cyber Shield</string>
     <string name="login_subtitle">Secure your device with CyberShield OTP login.</string>
-    <string name="login_phone_hint">Phone number (+91…)</string>
-    <string name="login_button">Send OTP</string>
+    <string name="login_phone_hint">Enter 10-digit phone number</string>
+    <string name="login_button">Generate OTP</string>
+    <string name="phone_error_empty">Please enter phone number</string>
+    <string name="phone_error_short">Phone number must be 10 digits</string>
+    <string name="phone_error_long">Phone number cannot exceed 10 digits</string>
+    <string name="recaptcha_text">I\'m not a robot</string>
+    <string name="recaptcha_verified">✓ Verified</string>
+    <string name="otp_generated">OTP Generated: %1$s</string>
+    <string name="otp_invalid">Invalid OTP. Please try again.</string>
+    <string name="otp_success">OTP verified successfully!</string>
     <string name="login_verify_human">Verify reCAPTCHA</string>
     <string name="login_human_pending">Please verify you are human.</string>
     <string name="login_human_ok">Human verification complete.</string>
@@ -13,6 +21,8 @@
     <string name="otp_hint">Enter 6-digit code</string>
     <string name="otp_verify">Verify</string>
     <string name="otp_resend">Resend OTP</string>
+    <string name="otp_resend_countdown">Resend OTP (%1$ds)</string>
+    <string name="otp_error_invalid">INVALID OTP</string>
     <string name="otp_first_fail">Incorrect OTP. Alert sent to user.</string>
     <string name="otp_freeze">Suspicious activity detected. Account frozen after 3 failed attempts.</string>
     <string name="otp_new_device">New device login detected.</string>

@@ -5,36 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
+    android:background="#FFFFFF"
     tools:context=".ui.auth.LoginActivity">
 
+    <!-- Cyber Shield Title -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/login_title"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp" />
 
-    <TextView
-        android:id="@+id/descText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/login_subtitle"
+    <!-- Logo in Circle -->
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logo_shield"
+        android:contentDescription="Cyber Shield Logo"
         app:layout_constraintTop_toBottomOf="@id/titleText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="24dp" />
 
+    <!-- Phone Number Input with Call Icon -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phoneLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:hint="@string/login_phone_hint"
-        app:layout_constraintTop_toBottomOf="@id/descText"
+        app:startIconDrawable="@drawable/ic_phone"
+        app:startIconTint="@color/secondaryText"
+        app:layout_constraintTop_toBottomOf="@id/logoImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -42,38 +52,100 @@
             android:id="@+id/phoneEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:maxLength="10"
+            android:digits="0123456789" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <!-- Generate OTP Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/sendOtpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/login_button"
+        android:textColor="@color/white"
         android:enabled="false"
+        app:backgroundTint="@color/primary"
         app:layout_constraintTop_toBottomOf="@id/phoneLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/recaptchaButton"
+    <!-- reCAPTCHA Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recaptchaContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/login_verify_human"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        android:background="@drawable/recaptcha_checkbox"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@id/sendOtpButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <FrameLayout
+            android:id="@+id/recaptchaCheckboxFrame"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/recaptchaCheckboxBg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/checkbox_custom"
+                android:contentDescription="reCAPTCHA checkbox" />
+
+            <ImageView
+                android:id="@+id/recaptchaCheckmark"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_checkmark"
+                android:visibility="gone"
+                android:contentDescription="Checkmark" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/recaptchaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recaptcha_text"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/recaptchaCheckboxFrame"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:contentDescription="reCAPTCHA info"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/recaptchaText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- reCAPTCHA Status Text -->
     <TextView
         android:id="@+id/recaptchaStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="@string/login_human_pending"
+        android:textSize="12sp"
         android:textColor="@color/secondaryText"
-        app:layout_constraintTop_toBottomOf="@id/recaptchaButton"
+        app:layout_constraintTop_toBottomOf="@id/recaptchaContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

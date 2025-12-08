@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Circular background -->
+    <path
+        android:fillColor="#1A73E8"
+        android:pathData="M60,60m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"/>
+    
+    <!-- Shield shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,20 L45,25 L45,50 Q45,70 60,85 Q75,70 75,50 L75,25 Z"/>
+    
+    <!-- Shield border -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1A73E8"
+        android:strokeWidth="2"
+        android:pathData="M60,20 L45,25 L45,50 Q45,70 60,85 Q75,70 75,50 L75,25 Z"/>
+    
+    <!-- Circuit pattern lines -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1A73E8"
+        android:strokeWidth="1.5"
+        android:pathData="M50,45 L70,45 M50,55 L70,55 M50,65 L70,65"/>
+    
+    <!-- Small dots (using path for circles) -->
+    <path
+        android:fillColor="#1A73E8"
+        android:pathData="M55,45m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"/>
+    <path
+        android:fillColor="#1A73E8"
+        android:pathData="M65,45m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"/>
+    <path
+        android:fillColor="#1A73E8"
+        android:pathData="M55,55m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"/>
+    <path
+        android:fillColor="#1A73E8"
+        android:pathData="M65,55m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"/>
+</vector>
+

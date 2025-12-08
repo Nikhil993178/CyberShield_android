@@ -2,38 +2,23 @@ package com.cybershield.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.cybershield.databinding.ActivityOtpBinding
 import com.cybershield.ui.dashboard.DashboardActivity
-import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.android.material.snackbar.Snackbar
+import kotlin.random.Random
 
 class OTPActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOtpBinding
-    private val viewModel: OtpViewModel by viewModels()
+    private var correctOtp: String = ""
     private var attempts = 0
     private var frozen = false
-    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            credential.smsCode?.let { binding.otpEdit.setText(it) }
-            signIn(credential)
-        }
-
-        override fun onVerificationFailed(e: FirebaseException) {
-            Toast.makeText(this@OTPActivity, e.localizedMessage, Toast.LENGTH_LONG).show()
-        }
-
-        override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-            viewModel.cacheVerificationId(verificationId)
-            Toast.makeText(this@OTPActivity, "OTP sent", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private var countDownTimer: CountDownTimer? = null
+    private val RESEND_DELAY_SECONDS = 15L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,72 +26,134 @@ class OTPActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val phone = intent.getStringExtra(EXTRA_PHONE) ?: ""
-        binding.phoneText.text = phone
+        correctOtp = intent.getStringExtra(EXTRA_OTP) ?: ""
+        
+        binding.phoneText.text = "OTP sent to: $phone"
 
-        sendOtp(phone)
+        if (correctOtp.isEmpty()) {
+            Toast.makeText(this, "OTP not found. Please generate again.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+        // Start countdown for resend button
+        startResendCountdown()
 
         binding.verifyButton.setOnClickListener {
             if (frozen) {
                 Toast.makeText(this, getString(com.cybershield.R.string.otp_freeze), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            val code = binding.otpEdit.text.toString()
-            viewModel.verifyOtp(code) { success, error ->
-                if (success) {
-                    handleSuccessfulLogin()
-                } else {
-                    handleFailedAttempt(error)
-                }
-            }
+            verifyOtp()
         }
 
-        binding.resendButton.setOnClickListener { sendOtp(phone, force = true) }
+        binding.resendButton.setOnClickListener {
+            if (frozen) {
+                Toast.makeText(this, getString(com.cybershield.R.string.otp_freeze), Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            resendOtp(phone)
+            startResendCountdown() // Restart countdown after resend
+        }
     }
 
-    private fun sendOtp(phone: String, force: Boolean = false) {
-        if (phone.isBlank()) {
-            Toast.makeText(this, "Phone number missing", Toast.LENGTH_SHORT).show()
+    private fun startResendCountdown() {
+        binding.resendButton.visibility = android.view.View.GONE
+        binding.resendButton.isEnabled = false
+        
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(RESEND_DELAY_SECONDS * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                binding.resendButton.text = getString(com.cybershield.R.string.otp_resend_countdown, secondsRemaining)
+                binding.resendButton.visibility = android.view.View.VISIBLE
+            }
+
+            override fun onFinish() {
+                binding.resendButton.text = getString(com.cybershield.R.string.otp_resend)
+                binding.resendButton.isEnabled = true
+                binding.resendButton.visibility = android.view.View.VISIBLE
+            }
+        }.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer?.cancel()
+    }
+
+    private fun verifyOtp() {
+        val enteredOtp = binding.otpEdit.text.toString().trim()
+        
+        if (enteredOtp.isEmpty()) {
+            Toast.makeText(this, "Please enter OTP", Toast.LENGTH_SHORT).show()
             return
         }
-        viewModel.resendOtp(phone, this, callbacks)
-        if (!force) {
-            Toast.makeText(this, "Sending OTP to $phone", Toast.LENGTH_SHORT).show()
+
+        if (enteredOtp == correctOtp) {
+            // Success
+            Toast.makeText(this, getString(com.cybershield.R.string.otp_success), Toast.LENGTH_SHORT).show()
+            handleSuccessfulLogin()
+        } else {
+            // Wrong OTP
+            handleFailedAttempt()
         }
     }
 
-    private fun signIn(credential: PhoneAuthCredential) {
-        FirebaseAuth.getInstance().signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    handleSuccessfulLogin()
-                } else {
-                    handleFailedAttempt(task.exception?.localizedMessage)
-                }
-            }
-    }
-
-    private fun handleFailedAttempt(error: String?) {
+    private fun handleFailedAttempt() {
         attempts += 1
-        val first = attempts == 1
-        val message = error ?: "Verification failed"
-        if (first) {
+        
+        if (attempts == 1) {
+            // First wrong attempt - show alert message
             Toast.makeText(this, getString(com.cybershield.R.string.otp_first_fail), Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        
+        // Show invalid OTP message in big font at bottom
+        showError(getString(com.cybershield.R.string.otp_error_invalid))
+        
+        // Clear OTP field
+        binding.otpEdit.text?.clear()
+        
+        // Freeze after 3 attempts
         if (attempts >= 3) {
             freezeAccount()
         }
+    }
+
+    private fun showError(message: String) {
+        binding.errorText.text = message
+        binding.errorText.visibility = android.view.View.VISIBLE
+        
+        // Hide error after 3 seconds
+        binding.errorText.postDelayed({
+            binding.errorText.visibility = android.view.View.GONE
+        }, 3000)
     }
 
     private fun freezeAccount() {
         frozen = true
         binding.verifyButton.isEnabled = false
         binding.resendButton.isEnabled = false
+        binding.otpEdit.isEnabled = false
+        
         Toast.makeText(this, getString(com.cybershield.R.string.otp_freeze), Toast.LENGTH_LONG).show()
-        Toast.makeText(this, getString(com.cybershield.R.string.otp_unfreeze_info), Toast.LENGTH_LONG).show()
+        Snackbar.make(binding.root, getString(com.cybershield.R.string.otp_unfreeze_info), Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun resendOtp(phone: String) {
+        // Generate new random 6-digit OTP
+        correctOtp = Random.nextInt(100000, 999999).toString()
+        
+        val message = getString(com.cybershield.R.string.otp_generated, correctOtp)
+        Toast.makeText(this, "OTP resent to $phone: $correctOtp", Toast.LENGTH_LONG).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+        
+        // Clear previous OTP input
+        binding.otpEdit.text?.clear()
     }
 
     private fun handleSuccessfulLogin() {
+        // Check for new device login
         if (isNewDevice()) {
             Toast.makeText(this, getString(com.cybershield.R.string.otp_new_device), Toast.LENGTH_LONG).show()
         }
@@ -131,6 +178,7 @@ class OTPActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_PHONE = "extra_phone"
+        const val EXTRA_OTP = "extra_otp"
     }
 }
 
