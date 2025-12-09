@@ -25,6 +25,36 @@
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.pin.PinCreationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.about.AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.loans.LoansActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.government.GovernmentSchemesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.investments.InvestmentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.news.NewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.transaction.TransactionProcessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.transaction.TransactionHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.blockchain.BlockchainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.auth.OTPActivity"
             android:exported="false" />
         <activity

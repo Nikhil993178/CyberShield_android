@@ -47,5 +47,8 @@
     <string name="settings_title">Settings</string>
     <string name="settings_language">Preferred language</string>
     <string name="settings_logout">Logout</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
 

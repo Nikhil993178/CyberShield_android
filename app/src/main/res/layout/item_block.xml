@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/blockIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Block #0"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/blockTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Timestamp"
+            android:textSize="12sp"
+            android:textColor="@color/secondaryText" />
+
+        <TextView
+            android:id="@+id/blockSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="From: Sender"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/blockReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To: Receiver"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/blockAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amount: ₹0"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/blockDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Description"
+            android:textSize="12sp"
+            android:textColor="@color/secondaryText"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/blockHash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Hash: ..."
+            android:textSize="10sp"
+            android:textColor="@color/secondaryText"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:id="@+id/blockPreviousHash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prev: ..."
+            android:textSize="10sp"
+            android:textColor="@color/secondaryText"
+            android:fontFamily="monospace" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+
+

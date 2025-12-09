@@ -28,7 +28,9 @@ class OTPActivity : AppCompatActivity() {
         val phone = intent.getStringExtra(EXTRA_PHONE) ?: ""
         correctOtp = intent.getStringExtra(EXTRA_OTP) ?: ""
         
-        binding.phoneText.text = "OTP sent to: $phone"
+        // Mask phone number (show only last 3 digits)
+        val maskedPhone = maskPhoneNumber(phone)
+        binding.phoneText.text = maskedPhone
 
         if (correctOtp.isEmpty()) {
             Toast.makeText(this, "OTP not found. Please generate again.", Toast.LENGTH_LONG).show()
@@ -174,6 +176,13 @@ class OTPActivity : AppCompatActivity() {
     private fun goToDashboard() {
         startActivity(Intent(this, DashboardActivity::class.java))
         finish()
+    }
+
+    private fun maskPhoneNumber(phone: String): String {
+        if (phone.length <= 3) return phone
+        val lastThree = phone.takeLast(3)
+        val masked = "*******$lastThree"
+        return masked
     }
 
     companion object {
